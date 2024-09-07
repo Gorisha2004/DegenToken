@@ -48,7 +48,7 @@ Reward is a smart contract inheriting properties from ERC20, Ownable, and ERC20B
 * Create a new file by clicking on the "+" icon in the left-hand sidebar.
 * Save the file with a .sol extension (e.g., DegenToken.sol).
 * Copy and paste the following code into the file:
-[RewardSystem.sol](DegenToken/RewardSystem.sol)
+[RewardSystem.sol](RewardSystem.sol)
 
 # Executing Program
 Deploy the contract using Remix (a platform to compile and deploy Solidity contracts) and implement all the functionalities by passing suitable values.
