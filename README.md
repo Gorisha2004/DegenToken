@@ -75,7 +75,9 @@ and many more.
 
 # Executing Program
 * Deploy the contract using Remix (a platform to compile and deploy Solidity contracts) and implement all the functionalities by passing suitable values.
-* Select the network as metamask and check all the transactions on snowtrace testnet by signing in with your account.
+* Select the network as metamask and run all the functionalities.
+* Check all the transactions on snowtrace testnet by signing in with your account.
+
 
 
 # Help
