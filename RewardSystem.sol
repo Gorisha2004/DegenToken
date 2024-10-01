@@ -18,6 +18,8 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
         uint256 id;
         address seller;
         uint256 price;
+        string itemName;
+
     }
 
     // Marketplace mapping for items listed by sellers
