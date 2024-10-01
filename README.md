@@ -27,15 +27,18 @@ Reward is a smart contract inheriting properties from ERC20, Ownable, and ERC20B
         transferFrom(msg.sender, _receiver, _value);
     }
 ```
-* purchaseItem : Allow Players to redeem tokens for in-game rewards
+* redeemItem : Allow Players to redeem tokens for specific in-game rewards (items)
 ```
-    function purchaseItem(uint256 amount) public {
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance to redeem tokens");
-        _burn(msg.sender, amount);
-        emit Redeem(msg.sender, amount);
+    function redeemItem(string memory itemName) public {
+        uint256 price = itemPrices[itemName];
+        require(price > 0, "Item does not exist");
+        require(balanceOf(msg.sender) >= price, "Insufficient balance to redeem item");
+
+        _burn(msg.sender, price);
+        emit Redeem(msg.sender, price, itemName);
     }
 ```  
-* burnToken: Allows any token holder to burn their tokens.
+* burnTokens: Allows any token holder to burn their tokens.
 ```
     function burnTokens(uint256 amount) public {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance to burn tokens");
@@ -44,11 +47,10 @@ Reward is a smart contract inheriting properties from ERC20, Ownable, and ERC20B
 ```
 * listItem
 ```
- function listItem(uint256 price) public {
+    function listItem(uint256 price) public {
         require(price > 0, "Price must be greater than zero");
         require(balanceOf(msg.sender) >= price, "You do not have enough tokens to list this item");
 
-        // Deduct the price from the seller as a form of listing fee (optional)
         _burn(msg.sender, price);
 
         uint256 newItemId = nextItemId++;
