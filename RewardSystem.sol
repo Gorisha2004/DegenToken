@@ -45,6 +45,16 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
+    // Function to get the balance of the caller's tokens
+    function getBalance() external view returns(uint256) {
+        return this.balanceOf(msg.sender);
+    }
+    // Players can transfer tokens to other players
+    function transferToken(address _receiver, uint256 _value) external {
+        require(balanceOf(msg.sender) >= _value, "You do not have enough tokens");
+        approve(msg.sender, _value);
+        transferFrom(msg.sender, _receiver, _value);
+    }
 
     // Players redeem tokens for specific in-game rewards (items)
     function redeemItem(string memory itemName) public {
@@ -54,6 +64,11 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
 
         _burn(msg.sender, price);
         emit Redeem(msg.sender, price, itemName);
+    }
+    // Players can burn tokens voluntarily if they no longer need them
+    function burnTokens(uint256 amount) public {
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance to burn tokens");
+        _burn(msg.sender, amount);
     }
 
     // Function to add or update redeemable items with their prices
