@@ -47,14 +47,14 @@ Reward is a smart contract inheriting properties from ERC20, Ownable, and ERC20B
 ```
 * listItem
 ```
-    function listItem(uint256 price) public {
+    function listItem(uint256 price, string memory itemName) public {
         require(price > 0, "Price must be greater than zero");
         require(balanceOf(msg.sender) >= price, "You do not have enough tokens to list this item");
 
         _burn(msg.sender, price);
 
         uint256 newItemId = nextItemId++;
-        marketplace[newItemId] = Item(newItemId, msg.sender, price);
+        marketplace[newItemId] = Item(newItemId, msg.sender, price, itemName);
 
         emit ItemAdded(newItemId, price, msg.sender);
     }
