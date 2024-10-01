@@ -19,7 +19,6 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
         address seller;
         uint256 price;
         string itemName;
-
     }
 
     // Marketplace mapping for items listed by sellers
@@ -39,18 +38,20 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
         itemPrices["Sword"] = 100;
         itemPrices["Shield"] = 200;
 
-        marketplace[nextItemId++] = Item(1, msg.sender, 300);
-        marketplace[nextItemId++] = Item(2, msg.sender, 500);
+        marketplace[nextItemId++] = Item(1, msg.sender, 300, "Armor");
+        marketplace[nextItemId++] = Item(2, msg.sender, 500, "Helmet");
     }
 
     // Function to mint tokens to reward players (only the owner can mint tokens)
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
+
     // Function to get the balance of the caller's tokens
     function getBalance() external view returns(uint256) {
         return this.balanceOf(msg.sender);
     }
+
     // Players can transfer tokens to other players
     function transferToken(address _receiver, uint256 _value) external {
         require(balanceOf(msg.sender) >= _value, "You do not have enough tokens");
@@ -67,6 +68,7 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
         _burn(msg.sender, price);
         emit Redeem(msg.sender, price, itemName);
     }
+
     // Players can burn tokens voluntarily if they no longer need them
     function burnTokens(uint256 amount) public {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance to burn tokens");
@@ -80,14 +82,14 @@ contract Reward is ERC20, Ownable, ERC20Burnable {
     }
 
     // Sellers can list an item on the marketplace with a price
-    function listItem(uint256 price) public {
+    function listItem(uint256 price, string memory itemName) public {
         require(price > 0, "Price must be greater than zero");
         require(balanceOf(msg.sender) >= price, "You do not have enough tokens to list this item");
 
         _burn(msg.sender, price);
 
         uint256 newItemId = nextItemId++;
-        marketplace[newItemId] = Item(newItemId, msg.sender, price);
+        marketplace[newItemId] = Item(newItemId, msg.sender, price, itemName);
 
         emit ItemAdded(newItemId, price, msg.sender);
     }
